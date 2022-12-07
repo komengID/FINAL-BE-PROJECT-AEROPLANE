@@ -1,8 +1,22 @@
 const {model} = require('sequelize');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-
 const User = require('../models').Users;
+
+const login = async (req, res) => {
+    const {email, password} = req.body;
+    const user = await User.findOne({where: {email: email}});
+    if (!user) {
+        return res.status(400).json({message: 'User does not exist'});
+    }
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+        return res.status(400).json({message: 'Invalid password'});
+    }
+    const token = jwt.sign({id: user.id}, process.env.JWT_SECRET);
+    res.status(200).json({message: 'User logged in successfully', token});
+};
+
 const register = async (req, res) => {
     const {firstName, lastName, email, password, username, country_code, phone_number, address} = req.body;
     const user = await User.findOne({where: {email: email}});
@@ -26,5 +40,6 @@ const register = async (req, res) => {
 };
 
 module.exports = {
+    login,
     register
 };

@@ -96,7 +96,7 @@
       }
     },
     "/api/auth/login": {
-      "post": {
+      "get": {
         "summary": "Login",
         "tags": ["Auth"],
         "description": "Retrieve access tokens",

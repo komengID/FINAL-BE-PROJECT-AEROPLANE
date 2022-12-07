@@ -208,8 +208,8 @@
             "example": "url photo"
           },
           "role": {
-            "type": "string",
-            "example": "Admin"
+            "type": "integer",
+            "example": "1"
           }
         }
       }

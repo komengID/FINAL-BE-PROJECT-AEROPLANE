@@ -4,17 +4,17 @@ const bcrypt = require('bcrypt');
 const User = require('../models').Users;
 
 const login = async (req, res) => {
-    const {email, password} = req.body;
-    const user = await User.findOne({where: {email: email}});
-    if (!user) {
-        return res.status(400).json({message: 'User does not exist'});
+    try {
+        const {email, password} = req.body;
+        const user = await User.findOne({where: {email}});
+        if (!user) return res.status(400).json({message: 'Email tidak terdaftar'});
+        const validPassword = await bcrypt.compare(password, user.password);
+        if (!validPassword) return res.status(400).json({message: 'Password salah'});
+        const token = jwt.sign({id: user.id}, process.env.JWT_SECRET);
+        res.status(200).json({message: 'Login berhasil', token});
+    } catch (error) {
+        res.status(500).json({message: 'Server error'});
     }
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) {
-        return res.status(400).json({message: 'Invalid password'});
-    }
-    const token = jwt.sign({id: user.id}, process.env.JWT_SECRET);
-    res.status(200).json({message: 'User logged in successfully', token});
 };
 
 const register = async (req, res) => {
@@ -39,7 +39,35 @@ const register = async (req, res) => {
     res.status(201).json({message: 'User created successfully', token});
 };
 
-module.exports = {
-    login,
-    register
+const verify = async (req, res) => {
+    const {token} = req.body;
+    if (!token) return res.status(400).json({message: 'Token tidak ada'});
+    try {
+        const verified = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findOne({where: {id: verified.id}});
+        if (!user) return res.status(400).json({message: 'User tidak ada'});
+        user.verified = true;
+        await user.save();
+        res.status(200).json({message: 'User berhasil diverifikasi'});
+    } catch (error) {
+        res.status(400).json({message : 'Token tidak valid'});
+    }
 };
+
+const getProfile = async (req, res) => {
+ const {id} = req.param;
+ try {
+    const profile = await User.findOne({where: {id}});
+    res.status(200).json({
+        profile
+    });
+    } catch (error) {
+        res.status(error.statusCode || 500).json({
+            message: error.message
+        });
+    }
+ }
+
+module.exports = {
+    login, register, verify, getProfile
+}

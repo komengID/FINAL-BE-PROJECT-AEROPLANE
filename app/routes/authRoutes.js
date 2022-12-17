@@ -6,4 +6,5 @@ router.post('/auth/register', register);
 router.get('/auth/verify', verify);
 router.get('/auth/getProfile', getProfile);
 router.get('/auth/google-login' , loginGoogle);
+
 module.exports = router;

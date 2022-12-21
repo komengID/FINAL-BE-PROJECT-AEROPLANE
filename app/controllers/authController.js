@@ -103,5 +103,5 @@ module.exports = {
   register,
   verify,
   getProfile,
-    loginGoogle,
+  loginGoogle,
 };

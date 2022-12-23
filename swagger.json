@@ -6,8 +6,8 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000/",
-      "description": "local"
+      "url": "https://final-be-project-aeroplane-production.up.railway.app/",
+      "description": "production"
     }
   ],
   "tags": [

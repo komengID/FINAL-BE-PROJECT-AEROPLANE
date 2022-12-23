@@ -1,11 +1,12 @@
 const jwt = require('jsonwebtoken');
-const { users } = require('../app/models');
+const User = require("../app/models").Users;
 
 module.exports = function (req, res, next) {
     // req is an object
 
     // Client will headers called authorization which contains JWT
     try {
+        console.log(req.headers.authorization)
         const bearerToken = req.headers.authorization // Basic Authentication -> Bearer Authentication
         const bearer = bearerToken.split(' ');
         const token = bearer[1];
@@ -17,9 +18,9 @@ module.exports = function (req, res, next) {
             })
         }
 
-        const payload = jwt.verify(token, 'rahasia');
+        const payload = jwt.verify(token, process.env.JWT_SECRET);
         console.log('Payload:', payload)
-        users.findByPk(payload.id)
+        User.findByPk(payload.id)
             .then(instance => {
                 req.user = instance;
                 next()

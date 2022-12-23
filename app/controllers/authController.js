@@ -4,6 +4,8 @@ const bcrypt = require("bcrypt");
 const User = require("../models").Users;
 const googleOauth2 = require("../utils/oauth2/google");
 const { redirect } = require("express/lib/response");
+const imagekit = require("../../libs/imageKit");
+
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -67,9 +69,14 @@ const verify = async (req, res) => {
 };
 
 const getProfile = async (req, res) => {
-  const { id } = req.param;
+  console.log(req.user)
   try {
-    const profile = await User.findOne({ where: { id } });
+    const profile = await User.findOne(
+      {
+        where: {
+          id: req.user.id
+        }
+      });
     res.status(200).json({
       profile,
     });
@@ -86,20 +93,12 @@ const updateProfile = async (req, res) => {
   const {
     firstName,
     lastName,
-    email,
-    password: hashedPassword,
     username,
     country_code,
     phone_number,
     address,
   } = req.body;
-  const user = await User.findOne({ where: { email, }, });
-  if (user.email !== email) {
-    return res.status(400).json({ message: "Email tidak boleh diganti" });
-  }
-  if (password) {
-    return res.status(400).json({ message: "Password tidak boleh diganti" });
-  }
+  const user = await User.findByPk(req.user.id);
   if (!firstName) {
     return res.status(400).json({ message: "First name tidak boleh kosong" });
   }
@@ -125,35 +124,33 @@ const updateProfile = async (req, res) => {
       file.mimetype === "image/png" ||
       file.mimetype === "image/jpg" ||
       file.mimetype === "image/gif";
-  if (!validFormat) {
-    return res.status(400).json({ 
-      status: "failed",
-      message: "Format file tidak valid",
+    if (!validFormat) {
+      return res.status(400).json({
+        status: "failed",
+        message: "Format file tidak valid",
+      });
+    }
+    const split = file.originalname.split('.');
+    const extension = split[split.length - 1];
+
+    const img = await imagekit.upload({
+      file: file.buffer.toString('base64'),
+      fileName: `${id}.${extension}`,
     });
-  }
-  const split = file.originalname.split('.');
-  const extension = split[split.length - 1];
 
-  const img = await imagekit.upload({
-    file: file.buffer.toString('base64'),
-    fileName: `${id}.${extension}`,
-  });
-
-  const updatedUser = await User.update(
-    {
-      firstName,
-      lastName,
-      email,
-      password: hashedPassword,
-      username,
-      country_code,
-      phone_number,
-      address,
-      profile_picture: img.url,
-    },
-    { where: { id }, returning: true }
-  );
-  res.status(200).json({ message: "Profile berhasil diupdate", updatedUser });
+    const updatedUser = await User.update(
+      {
+        firstName,
+        lastName,
+        username,
+        country_code,
+        phone_number,
+        address,
+        profile_picture: img.url,
+      },
+      { where: { id }, returning: true }
+    );
+    res.status(200).json({ message: "Profile berhasil diupdate", updatedUser });
   };
 };
 const loginGoogle = async (req, res) => {
@@ -161,8 +158,8 @@ const loginGoogle = async (req, res) => {
     console.log('masuk');
     const code = req.query.code;
     if (!code) {
-        const url = googleOauth2.generateAuthURL();
-        return res.redirect(url);
+      const url = googleOauth2.generateAuthURL();
+      return res.redirect(url);
     }
     const tokens = await googleOauth2.setCredentials(code);
     const { data } = await googleOauth2.getUserData();

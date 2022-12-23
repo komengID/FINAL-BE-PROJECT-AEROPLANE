@@ -2,7 +2,8 @@ const router = require('express').Router();
 const {
     getAirports,
     getAirportById,
-    addAirports
+    addAirports,
+    updateAirport
 } = require('../controllers/airportController');
 
 // middleware
@@ -12,5 +13,6 @@ const isAdmin = require('../../middleware/isAdmin');
 router.get('/airport', getAirports);
 router.get('/airport/:id', getAirportById);
 router.post('/airport', addAirports);
+router.put('/airport/:id', updateAirport);
 
 module.exports = router;

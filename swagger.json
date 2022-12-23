@@ -206,7 +206,7 @@
     "/api/auth/profile": {
       "put": {
         "tags": ["Auth"],
-        "summary": "Update User diupdate",
+        "summary": "Update User",
         "description": "Change user information",
         "security": [
           {
@@ -330,9 +330,10 @@
     },
     "securitySchemes": {
       "bearerToken": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "Authorization"
+        "description": "Insert Token, You can get it after login",
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }

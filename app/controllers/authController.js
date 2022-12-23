@@ -98,25 +98,6 @@ const updateProfile = async (req, res) => {
     phone_number,
     address,
   } = req.body;
-  const user = await User.findByPk(req.user.id);
-  if (!firstName) {
-    return res.status(400).json({ message: "First name tidak boleh kosong" });
-  }
-  if (!lastName) {
-    return res.status(400).json({ message: "Last name tidak boleh kosong" });
-  }
-  if (!username) {
-    return res.status(400).json({ message: "Username tidak boleh kosong" });
-  }
-  if (!country_code) {
-    return res.status(400).json({ message: "Country code tidak boleh kosong" });
-  }
-  if (!phone_number) {
-    return res.status(400).json({ message: "Phone number tidak boleh kosong" });
-  }
-  if (!address) {
-    return res.status(400).json({ message: "Address tidak boleh kosong" });
-  }
 
   if (file) {
     const validFormat =

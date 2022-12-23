@@ -314,7 +314,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Profil berhasil diperbarui."
+                      "example": "Profile berhasil diupdate."
                     },
                     "data": {
                       "$ref": "#/components/schemas/Users"

@@ -96,7 +96,7 @@
       }
     },
     "/api/auth/login": {
-      "get": {
+      "post": {
         "summary": "Login",
         "tags": ["Auth"],
         "description": "Retrieve access tokens",
@@ -108,11 +108,11 @@
                 "properties": {
                   "email": {
                     "type": "email",
-                    "example": "suhaeriheri45@gmail.com"
+                    "example": "zaki@gmail.com"
                   },
                   "password": {
                     "type": "password",
-                    "example": "tim3hore"
+                    "example": "jaki1234"
                   }
                 }
               }
@@ -154,6 +154,120 @@
                     "message": {
                       "type": "string",
                       "example": "Password salah."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/verify": {
+      "post": {
+        "summary": "Verify New User",
+        "tags": ["Auth"],
+        "description": "Verifikasi new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjcxODA5MDUwfQ.QNeu6U5eBAoGu9H8a7Q6aG0_giRqC64tDaX_UlODER8"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success Verifikasi User Baru",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User berhasil diverifikasi"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/profile": {
+      "put": {
+        "tags": ["Auth"],
+        "summary": "Update User diupdate",
+        "description": "Change user information",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Users",
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Profil berhasil diperbarui."
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Users"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token tidak valid."
                     }
                   }
                 }

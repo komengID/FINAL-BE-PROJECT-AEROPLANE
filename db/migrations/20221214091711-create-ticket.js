@@ -9,7 +9,24 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      id_booking: {
+      id_airport: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
+      departure_date: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      arrival_date: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      class: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      price: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       createdAt: {

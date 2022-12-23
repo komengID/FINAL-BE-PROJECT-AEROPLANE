@@ -32,6 +32,7 @@ const register = async (req, res) => {
     country_code,
     phone_number,
     address,
+    role
   } = req.body;
   const user = await User.findOne({ where: { email: email } });
   if (user) {
@@ -48,6 +49,7 @@ const register = async (req, res) => {
     country_code,
     phone_number,
     address,
+    role
   });
   const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET);
   res.status(201).json({ message: "User created successfully", token });

@@ -11,7 +11,7 @@
     "db:migrate": "sequelize db:migrate",
     "db:seed": "sequelize db:seed:all",
     "db:drop": "sequelize db:drop",
-    "db:rollback": "sequelize db:migrate:undo"
+    "db:rollback": "sequelize db:migrate:undo:all"
   },
   "author": "",
   "license": "ISC",

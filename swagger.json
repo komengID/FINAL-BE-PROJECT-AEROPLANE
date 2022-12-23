@@ -204,6 +204,57 @@
       }
     },
     "/api/auth/profile": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Get User",
+        "description": "Get user information",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],        
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Users"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token tidak valid."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "put": {
         "tags": ["Auth"],
         "summary": "Update User",
@@ -218,9 +269,27 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Users",
-                "type": "object",
                 "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "example": "Zaki"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Jaaa"
+                  },
+                  "username": {
+                    "type": "string",
+                    "example": "hetotheri"
+                  },
+                  "phone_number": {
+                    "type": "string",
+                    "example": "081384753928"
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "Jl. Mejikuhibiniu"
+                  },
                   "image": {
                     "type": "string",
                     "format": "binary"

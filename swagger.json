@@ -319,6 +319,7 @@
           },
           "photo": {
             "type": "string",
+            "format": "binary",
             "example": "url photo"
           },
           "role": {

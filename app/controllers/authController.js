@@ -79,6 +79,83 @@ const getProfile = async (req, res) => {
     });
   }
 };
+
+const updateProfile = async (req, res) => {
+  const { id, } = req.user;
+  const { file, } = req;
+  const {
+    firstName,
+    lastName,
+    email,
+    password: hashedPassword,
+    username,
+    country_code,
+    phone_number,
+    address,
+  } = req.body;
+  const user = await User.findOne({ where: { email, }, });
+  if (user.email !== email) {
+    return res.status(400).json({ message: "Email tidak boleh diganti" });
+  }
+  if (password) {
+    return res.status(400).json({ message: "Password tidak boleh diganti" });
+  }
+  if (!firstName) {
+    return res.status(400).json({ message: "First name tidak boleh kosong" });
+  }
+  if (!lastName) {
+    return res.status(400).json({ message: "Last name tidak boleh kosong" });
+  }
+  if (!username) {
+    return res.status(400).json({ message: "Username tidak boleh kosong" });
+  }
+  if (!country_code) {
+    return res.status(400).json({ message: "Country code tidak boleh kosong" });
+  }
+  if (!phone_number) {
+    return res.status(400).json({ message: "Phone number tidak boleh kosong" });
+  }
+  if (!address) {
+    return res.status(400).json({ message: "Address tidak boleh kosong" });
+  }
+
+  if (file) {
+    const validFormat =
+      file.mimetype === "image/jpeg" ||
+      file.mimetype === "image/png" ||
+      file.mimetype === "image/jpg" ||
+      file.mimetype === "image/gif";
+  if (!validFormat) {
+    return res.status(400).json({ 
+      status: "failed",
+      message: "Format file tidak valid",
+    });
+  }
+  const split = file.originalname.split('.');
+  const extension = split[split.length - 1];
+
+  const img = await imagekit.upload({
+    file: file.buffer.toString('base64'),
+    fileName: `${id}.${extension}`,
+  });
+
+  const updatedUser = await User.update(
+    {
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+      username,
+      country_code,
+      phone_number,
+      address,
+      profile_picture: img.url,
+    },
+    { where: { id }, returning: true }
+  );
+  res.status(200).json({ message: "Profile berhasil diupdate", updatedUser });
+  };
+};
 const loginGoogle = async (req, res) => {
   try {
     console.log('masuk');
@@ -103,5 +180,6 @@ module.exports = {
   register,
   verify,
   getProfile,
+  updateProfile,
   loginGoogle,
 };

@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models").Users;
 const googleOauth2 = require("../utils/oauth2/google");
-const { redirect } = require("express/lib/response");
+// const { redirect } = require("express/lib/response");
 const imagekit = require("../../libs/imageKit");
 
 const login = async (req, res) => {

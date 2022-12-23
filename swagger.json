@@ -269,6 +269,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "firstName": {
                     "type": "string",

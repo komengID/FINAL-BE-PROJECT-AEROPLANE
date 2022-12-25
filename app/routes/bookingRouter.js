@@ -12,7 +12,7 @@ const {
 
 router.get('', getBooking);
 router.get('/:id', getBookingById);
-router.post('', auth, addBooking);
+router.post('', addBooking);
 router.put('/:id', updateBooking);
 router.delete('/:id', deleteBooking);
 

@@ -1,19 +1,26 @@
-const { booking, ticket, pessengger, user } = require('../models');
+const { booking, ticket, passenger, users } = require('../models');
 
 
-const getBooking = async (req, res) => {
+let getBooking = async (req, res) => {
+    
     try {
-        const booking = await booking.findAll(
+        let bookings = await booking.findAll(
             {
                 include: [
                     {
-                        model: {ticket,pessengger,user}
+                        model: ticket
+                    },
+                    {
+                        model: passenger
+                    },
+                    {
+                        model: users
                     },
                 ],
             }
         );
         res.status(200).json({
-            booking,
+            bookings,
         });
     } catch (error) {
         res.status(error.statusCode || 500).json({
@@ -33,7 +40,13 @@ const getBookingById = async (req, res) => {
             {
                 include: [
                     {
-                        model: {ticket,pessengger,user}
+                        model: ticket
+                    },
+                    {
+                        model: passenger
+                    },
+                    {
+                        model: users
                     },
                 ],
             }
@@ -50,8 +63,19 @@ const getBookingById = async (req, res) => {
 
 
 const addBooking = async (req, res) => {
+    const {
+        id_passenger,
+        departureDate,
+        arrivalDate,
+        classType,
+    } = req.body
     try {
-        const newBooking = await booking.create(req.body);
+        const newBooking = await booking.create({
+            id_passenger,
+            departureDate,
+            arrivalDate,
+            classType
+        });
         res.status(200).json({
             message: 'Booking berhasil ditambahkan',
             newBooking,

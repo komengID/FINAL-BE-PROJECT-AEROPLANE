@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.belongsTo(models.airport, { foreignKey: 'id_airport' });
     }
+    static associate(models) {
+      // define association here
+      this.hasMany(models.booking, { foreignKey: 'id_ticket' });
+    }
+
   }
   ticket.init({
     id_airport: DataTypes.INTEGER,

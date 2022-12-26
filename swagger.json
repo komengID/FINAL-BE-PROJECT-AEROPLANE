@@ -766,6 +766,108 @@
         }
       }
     },
+    "/api/tickets/search": {
+      "get": {
+        "tags": ["Ticket"],
+        "summary": "Search ticket",
+        "description": "Search ticket by user",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "airport_name",
+            "schema": {
+              "type": "string",
+              "example": "Ngurah Rai International Airport"
+            }
+          },
+          {
+            "in": "query",
+            "name": "airport_location",
+            "schema": {
+              "type": "string",
+              "example": "Denpasar, Bali, Indonesia"
+            }
+          },
+          {
+            "in": "query",
+            "name": "departure_date",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2022-12-26T05:32:50.948Z"
+            }
+          },
+          {
+            "in": "query",
+            "name": "arrival_date",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2022-12-26T05:32:50.948Z"
+            }
+          },
+          {
+            "in": "query",
+            "name": "price",
+            "schema": {
+              "type": "integer",
+              "example": 8000000
+            }
+          },
+          {
+            "in": "query",
+            "name": "class_type",
+            "schema": {
+              "type": "string",
+              "example": "Ekonomi"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "tiket hasil pencarian"
+                    },
+                    "ticket": {
+                      "$ref": "#/components/schemas/ticketResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ticket is not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Tiket tidak ditemukan."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/tickets/{id}": {
       "get": {
         "tags": ["Ticket"],

@@ -1,4 +1,7 @@
 const { ticket, airport } = require('../models');
+const { search } = require('../routes/authRoutes');
+const { Op } = require('sequelize');
+const Sequelize = require('sequelize');
 
 const getTicket = async (req, res) => {
     try {
@@ -86,10 +89,54 @@ const deleteTicket = async (req, res) => {
     }
 };
 
+const searchTicket = async (req, res) => {
+    try {
+        const { departure_date, arrival_date, class_type, price, airport_name, airport_location } = req.query;
+        const tickets = await ticket.findAll({
+            where: {
+                [Op.or]: [
+                    {
+                        '$airport.airport_location$': { [Op.iLike]: `%${airport_location}%` },
+                    },
+                    {
+                        '$airport.airport_name$': { [Op.iLike]: `%${airport_name}%` },
+                    },
+                    {
+                        departure_date,
+                    },
+                    {
+                        arrival_date,
+                    },
+                    {
+                        class: { [Op.iLike]: `%${class_type}%` },
+                    },
+                    {
+                        price: { [Op.gt]: price},
+                    },
+                ]
+            },
+            include: [{
+                model: airport,
+                as: 'airport',
+                required: true
+            }]
+        });
+        res.status(200).json({
+            tickets
+        });
+    } catch (error) {
+        res.status(error.statusCode || 500).json({
+            message: error.message,
+        });
+    }
+};
+
+
 module.exports = {
     getTicket,
     getTicketById,
     addTicket,
     updateTicket,
     deleteTicket,
+    searchTicket,
 };

@@ -11,16 +11,19 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsTo(models.passenger, { foreignKey: 'id_passenger' });
+      this.belongsTo(models.ticket, { foreignKey: 'id_ticket' });
+      this.belongsTo(models.Users, { foreignKey: 'id_users' });
     }
   }
   booking.init({
     id_passenger: DataTypes.INTEGER,
-    id_departure: DataTypes.INTEGER,
-    id_arrival: DataTypes.INTEGER,
-    departureDate: DataTypes.DATE,
-    arrivalDate: DataTypes.DATE,
-    classType: DataTypes.INTEGER,
-    total_booking: DataTypes.INTEGER
+    id_ticket: DataTypes.INTEGER,
+    id_users: DataTypes.INTEGER,
+    total_booking: {
+      type: DataTypes.INTEGER,
+      defaultValue: 1,
+    },
   }, {
     sequelize,
     modelName: 'booking',

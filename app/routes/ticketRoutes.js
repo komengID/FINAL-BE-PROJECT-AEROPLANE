@@ -7,9 +7,11 @@ const {
     getTicketById,
     updateTicket,
     deleteTicket,
+    searchTicket
 } = require('../controllers/ticketController');
 
 router.get('', getTicket);
+router.get('/search', searchTicket);
 router.get('/:id', getTicketById);
 router.post('', auth, isAdmin, addTicket);
 router.put('/:id', auth, isAdmin, updateTicket);

@@ -12,10 +12,10 @@ module.exports = {
       id_passenger: {
         type: Sequelize.INTEGER
       },
-      id_departure: {
+      id_ticket: {
         type: Sequelize.INTEGER
       },
-      id_arrival: {
+      id_users: {
         type: Sequelize.INTEGER
       },
       departureDate: {
@@ -25,7 +25,7 @@ module.exports = {
         type: Sequelize.DATE
       },
       classType: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       total_booking: {
         type: Sequelize.INTEGER

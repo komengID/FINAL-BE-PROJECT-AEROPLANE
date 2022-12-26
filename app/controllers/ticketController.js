@@ -89,47 +89,37 @@ const deleteTicket = async (req, res) => {
     }
 };
 
-const searchTicket = async (req, res) => {
+const searchTicketUser = async (req, res) => {
     try {
-        const { departure_date, arrival_date, class_type, price, airport_name, airport_location } = req.query;
-        const tickets = await ticket.findAll({
+      const { departure_date, arrival_date, airport_name, airport_location } = req.query;
+      const data = await ticket.findAll({
+        include: [
+          {
+            model: airport,
+            as: "airport",
             where: {
-                [Op.or]: [
-                    {
-                        '$airport.airport_location$': { [Op.iLike]: `%${airport_location}%` },
-                    },
-                    {
-                        '$airport.airport_name$': { [Op.iLike]: `%${airport_name}%` },
-                    },
-                    {
-                        departure_date,
-                    },
-                    {
-                        arrival_date,
-                    },
-                    {
-                        class: { [Op.iLike]: `%${class_type}%` },
-                    },
-                    {
-                        price: { [Op.gt]: price},
-                    },
-                ]
-            },
-            include: [{
-                model: airport,
-                as: 'airport',
-                required: true
-            }]
+              airport_name, airport_location
+            }
+          },
+        ],
+        where: {
+          departure_date,
+          arrival_date,
+        },
+      });
+  
+      if (data.length > 0) {
+        return res.status(200).json({
+          data,
         });
-        res.status(200).json({
-            tickets
-        });
+      }
+      res.status(400).json({
+        message: "Ticket not found",
+      });
     } catch (error) {
-        res.status(error.statusCode || 500).json({
-            message: error.message,
-        });
+      console.log(error);
     }
-};
+  };
 
 
 module.exports = {
@@ -138,5 +128,5 @@ module.exports = {
     addTicket,
     updateTicket,
     deleteTicket,
-    searchTicket,
+    searchTicketUser,
 };

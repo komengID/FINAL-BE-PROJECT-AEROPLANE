@@ -18,15 +18,6 @@ module.exports = {
       id_users: {
         type: Sequelize.INTEGER
       },
-      departureDate: {
-        type: Sequelize.DATE
-      },
-      arrivalDate: {
-        type: Sequelize.DATE
-      },
-      classType: {
-        type: Sequelize.STRING
-      },
       total_booking: {
         type: Sequelize.INTEGER
       },

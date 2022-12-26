@@ -18,7 +18,7 @@ router.use('/api', authRoutes)
 router.use('/api/airports', airportRoutes)
 router.use('/api/passenger', passengerRoutes)
 router.use('/api/tickets', ticketRoutes)
-router.use('/api/booking', bookingRoutes)
+router.use('/api/bookings', bookingRoutes)
 
 // router.get('/user',authenticate,user)
 

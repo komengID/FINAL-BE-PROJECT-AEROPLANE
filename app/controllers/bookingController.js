@@ -1,8 +1,7 @@
-const { booking, ticket, passenger, users } = require('../models');
+const { booking, ticket, passenger, Users } = require('../models');
 
 
 let getBooking = async (req, res) => {
-    
     try {
         let bookings = await booking.findAll(
             {
@@ -14,7 +13,36 @@ let getBooking = async (req, res) => {
                         model: passenger
                     },
                     {
-                        model: users
+                        model: Users
+                    },
+                ],
+            }
+        );
+        res.status(200).json({
+            bookings,
+        });
+    } catch (error) {
+        res.status(error.statusCode || 500).json({
+            message: error.message,
+        });
+    }
+};
+
+let bookingsUser = async (req, res) => {
+    try {
+        let bookings = await Users.findByPk(req.user.id,
+            {
+                include: [
+                    {
+                        model: booking,
+                        include: [
+                            {
+                                model: ticket,
+                            },
+                            {
+                                model: passenger
+                            },
+                        ],
                     },
                 ],
             }
@@ -33,10 +61,7 @@ let getBooking = async (req, res) => {
 const getBookingById = async (req, res) => {
     try {
         const { id, } = req.params;
-        const getBooking = await booking.findOne(
-            {
-                where: { id, },
-            },
+        const data = await booking.findByPk(id,
             {
                 include: [
                     {
@@ -46,13 +71,13 @@ const getBookingById = async (req, res) => {
                         model: passenger
                     },
                     {
-                        model: users
+                        model: Users
                     },
                 ],
             }
         );
         res.status(200).json({
-            booking: getBooking,
+            data,
         });
     } catch (error) {
         res.status(error.statusCode || 500).json({
@@ -64,20 +89,24 @@ const getBookingById = async (req, res) => {
 
 const addBooking = async (req, res) => {
     const {
-        id_passenger,
-        departureDate,
-        arrivalDate,
-        classType,
+        passenger_name,
+        nik,
+        id_ticket,
+        total_booking
     } = req.body
     try {
+        const passengerData = await passenger.create({
+            passenger_name,
+            nik,
+        });
         const newBooking = await booking.create({
-            id_passenger,
-            departureDate,
-            arrivalDate,
-            classType
+            id_passenger: passengerData.id,
+            id_ticket,
+            id_users: req.user.id,
+            total_booking,
         });
         res.status(200).json({
-            message: 'Booking berhasil ditambahkan',
+            message: 'Booking berhasil',
             newBooking,
         });
     } catch (error) {
@@ -117,6 +146,7 @@ const deleteBooking = async (req, res) => {
 
 module.exports = {
     getBooking,
+    bookingsUser,
     getBookingById,
     addBooking,
     updateBooking,

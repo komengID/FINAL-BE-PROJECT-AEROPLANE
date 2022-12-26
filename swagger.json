@@ -8,6 +8,10 @@
     {
       "url": "https://final-be-project-aeroplane-production.up.railway.app/",
       "description": "production"
+    },
+    {
+      "url": "http://localhost:3000/",
+      "description": "local"
     }
   ],
   "tags": [
@@ -22,6 +26,10 @@
     {
       "name": "Ticket",
       "description": "Ticket API Collection"
+    },
+    {
+      "name": "Booking",
+      "description": "Booking API Collection"
     }
   ],
   "paths": {
@@ -220,7 +228,7 @@
           {
             "bearerToken": []
           }
-        ],        
+        ],
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -358,9 +366,7 @@
     "/api/airports": {
       "post": {
         "summary": "Create Airport",
-        "tags": [
-          "Airport"
-        ],
+        "tags": ["Airport"],
         "description": "Add new airport on the database",
         "security": [
           {
@@ -425,9 +431,7 @@
       },
       "get": {
         "summary": "List Airports",
-        "tags": [
-          "Airport"
-        ],
+        "tags": ["Airport"],
         "description": "Retrieve list of airport",
         "responses": {
           "200": {
@@ -454,9 +458,7 @@
     },
     "/api/airports/{id}": {
       "get": {
-        "tags": [
-          "Airport"
-        ],
+        "tags": ["Airport"],
         "summary": "Get An Airport",
         "description": "Retrieve airport detail",
         "parameters": [
@@ -500,9 +502,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Airport"
-        ],
+        "tags": ["Airport"],
         "summary": "Update Airport",
         "description": "Change airport information",
         "security": [
@@ -594,9 +594,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Airport"
-        ],
+        "tags": ["Airport"],
         "summary": "Delete Airport",
         "description": "Remove existing airport by id.",
         "security": [
@@ -678,9 +676,7 @@
     "/api/tickets": {
       "post": {
         "summary": "Create Ticket",
-        "tags": [
-          "Ticket"
-        ],
+        "tags": ["Ticket"],
         "description": "Add new ticket on the database",
         "security": [
           {
@@ -745,9 +741,7 @@
       },
       "get": {
         "summary": "List Tickets",
-        "tags": [
-          "Ticket"
-        ],
+        "tags": ["Ticket"],
         "description": "Retrieve list of tickets / available flights.",
         "responses": {
           "200": {
@@ -774,9 +768,7 @@
     },
     "/api/tickets/{id}": {
       "get": {
-        "tags": [
-          "Ticket"
-        ],
+        "tags": ["Ticket"],
         "summary": "Get A Ticket",
         "description": "Retrieve the ticket details",
         "parameters": [
@@ -820,9 +812,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Ticket"
-        ],
+        "tags": ["Ticket"],
         "summary": "Update Ticket",
         "description": "Change ticket information",
         "security": [
@@ -914,9 +904,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Ticket"
-        ],
+        "tags": ["Ticket"],
         "summary": "Delete Ticket",
         "description": "Remove existing ticket flight by id",
         "security": [
@@ -994,6 +982,271 @@
           }
         }
       }
+    },
+    "/api/bookings": {
+      "post": {
+        "summary": "Create Booking",
+        "tags": ["Booking"],
+        "description": "Add new Booking on the database",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "passenger_name": {
+                    "type": "string",
+                    "example": "selly"
+                  },
+                  "nik": {
+                    "type": "integer",
+                    "example": "327302525295259"
+                  },
+                  "total_booking": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "id_ticket": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Booking berhasil"
+                    },
+                    "data": {
+                      "allOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            }
+                          }
+                        },
+                        {
+                          "$ref": "#/components/schemas/Bookings"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token. Unauthorized.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List Bookings",
+        "tags": ["Booking"],
+        "description": "Retrieve list of Bookings.",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/transactionResponse"
+                    },
+                    "count": {
+                      "type": "integer",
+                      "example": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token. Unauthorized.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bookings/user": {
+      "get": {
+        "summary": "List Bookings per USER",
+        "tags": ["Booking"],
+        "description": "Retrieve list of Bookings per User",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/transactionResponse"
+                    },
+                    "count": {
+                      "type": "integer",
+                      "example": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token. Unauthorized.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bookings/{id}": {
+      "get": {
+        "tags": ["Booking"],
+        "summary": "Get A Booking",
+        "description": "Retrieve the booking details",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/transactionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The transaction is not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Transaksi tidak ditemukan."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1021,7 +1274,7 @@
           },
           "username": {
             "type": "string",
-            "example": "hetotheri"
+            "example": "zaki"
           },
           "country_code": {
             "type": "string",
@@ -1081,6 +1334,27 @@
           "price": {
             "type": "integer",
             "example": "8000000"
+          }
+        }
+      },
+      "Bookings": {
+        "type": "object",
+        "properties": {
+          "id_passenger": {
+            "type": "integer",
+            "example": 1
+          },
+          "id_ticket": {
+            "type": "integer",
+            "example": 1
+          },
+          "id_users": {
+            "type": "integer",
+            "example": 1
+          },
+          "total_booking": {
+            "type": "integer",
+            "example": 1
           }
         }
       }

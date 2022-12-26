@@ -3,6 +3,7 @@ const auth = require('../../middleware/authentication');
 const isAdmin = require('../../middleware/isAdmin');
 const {
     getBooking,
+    bookingsUser,
     getBookingById,
     addBooking,
     updateBooking,
@@ -10,10 +11,11 @@ const {
 }= require('../controllers/bookingController');
 
 
-router.get('', getBooking);
-router.get('/:id', getBookingById);
-router.post('', addBooking);
-router.put('/:id', updateBooking);
-router.delete('/:id', deleteBooking);
+router.get('', auth, getBooking);
+router.get('/user', auth, bookingsUser);
+router.get('/:id', auth, getBookingById);
+router.post('', auth, addBooking);
+router.put('/:id', auth, updateBooking);
+router.delete('/:id', auth, deleteBooking);
 
 module.exports = router;

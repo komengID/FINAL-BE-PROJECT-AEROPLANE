@@ -1,4 +1,6 @@
 const { ticket, airport } = require('../models');
+const { search } = require('../routes/authRoutes');
+const { Op } = require('sequelize');
 
 const getTicket = async (req, res) => {
     try {
@@ -86,10 +88,109 @@ const deleteTicket = async (req, res) => {
     }
 };
 
+const searchTicket = async (req, res) => {
+    try {
+        const {
+            departure_date,
+            arrival_date,
+            class: classTicket,
+            price,
+            airport_name,
+            airport_location,
+        } = req.body;
+        console.log(req.body);
+        const departure = await airport.findAll({
+            where: {
+                airport_name,
+                // airport_location: {
+                //     [Op.like]: `%${airport_location}%`,
+                // }, 
+            },
+            include: [
+                {
+                    model: ticket
+                },
+            ],
+        });
+        console.log(departure);
+        const arrival = await airport.findAll({
+            where: {
+                airport_name: {
+                    [Op.like]: `%${airport_name}%`,
+                },
+                airport_location: {
+                    [Op.like]: `%${airport_location}%`,
+                },
+            },
+            include: [
+                {
+                    model: ticket
+                },
+            ],
+        });
+        const departureDate = await ticket.findAll({
+            where: {
+                departure_date,
+            },
+            include: [
+                {
+                    model: airport
+                },
+            ],
+        });
+        const arrivalDate = await ticket.findAll({
+            where: {
+                arrival_date,
+            },
+            include: [
+                {
+                    model: airport
+                },
+            ],
+        });
+        const classTickets = await ticket.findAll({
+            where: {
+                class: {
+                    [Op.like]: `%${classTicket}%`,
+                },
+            },
+            include: [
+                {
+                    model: airport
+                },
+            ],
+        });
+        const prices = await ticket.findAll({
+            where: {
+                price,
+            },
+            include: [
+                {
+                    model: airport
+                },
+            ],
+        }); 
+        res.status(200).json({
+            departure,
+            arrival,
+            departureDate,
+            arrivalDate,
+            classTickets,
+            prices,
+        });
+    } catch (error) {
+        res.status(error.statusCode || 500).json({
+            message: error.message,
+        });
+    }
+};
+
+
 module.exports = {
     getTicket,
     getTicketById,
     addTicket,
     updateTicket,
     deleteTicket,
+    searchTicket,
 };

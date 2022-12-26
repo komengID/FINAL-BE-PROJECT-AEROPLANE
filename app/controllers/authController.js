@@ -129,7 +129,7 @@ const updateProfile = async (req, res) => {
         country_code,
         phone_number,
         address,
-        profile_picture: img.url,
+        photo: img.url,
       },
       { where: { id }, returning: true }
     );

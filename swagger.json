@@ -270,7 +270,8 @@
             }
           }
         }
-      },
+      }
+    },
     "/api/auth/profile": {
       "get": {
         "tags": ["Auth"],
@@ -1713,140 +1714,141 @@
         }
       }
     }
-  }
-},
-
-"components": {
-  "schemas": {
-    "Users": {
-      "type": "object",
-      "properties": {
-        "firstName": {
-          "type": "string",
-          "example": "Zaki"
-        },
-        "lastName": {
-          "type": "string",
-          "example": "Jaaa"
-        },
-        "email": {
-          "type": "string",
-          "format": "email",
-          "example": "zaki@gmail.com"
-        },
-        "password": {
-          "type": "string",
-          "format": "password",
-          "example": "jaki1234"
-        },
-        "username": {
-          "type": "string",
-          "example": "zaki"
-        },
-        "country_code": {
-          "type": "string",
-          "example": "+62"
-        },
-        "phone_number": {
-          "type": "string",
-          "example": "081384753928"
-        },
-        "address": {
-          "type": "string",
-          "example": "Jl. Mejikuhibiniu"
-        },
-        "photo": {
-          "type": "string",
-          "format": "binary",
-          "example": "url photo"
-        },
-        "role": {
-          "type": "integer",
-          "example": "1"
-        }
-      }
-    },
-    "Airports": {
-      "type": "object",
-      "properties": {
-        "airport_name": {
-          "type": "string",
-          "example": "Ngurah Rai International Airport"
-        },
-        "airport_location": {
-          "type": "string",
-          "example": "Denpasar, Bali, Indonesia"
-        }
-      }
-    },
-    "Passengers": {
-      "type": "object",
-      "properties": {
-        "passenger_name": {
-          "type": "string",
-          "example": "Selly Bintang Melananda"
-        },
-        "nik": {
-          "type": "string",
-          "example": "3510023553000982"
-        }
-      }
-    },
-    "Tickets": {
-      "type": "object",
-      "properties": {
-        "id_airport": {
-          "type": "integer",
-          "example": 1
-        },
-        "departure_date": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "arrival_date": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "class": {
-          "type": "string",
-          "example": "Ekonomi"
-        },
-        "price": {
-          "type": "integer",
-          "example": "8000000"
-        }
-      }
-    },
-    "Bookings": {
-      "type": "object",
-      "properties": {
-        "id_passenger": {
-          "type": "integer",
-          "example": 1
-        },
-        "id_ticket": {
-          "type": "integer",
-          "example": 1
-        },
-        "id_users": {
-          "type": "integer",
-          "example": 1
-        },
-        "total_booking": {
-          "type": "integer",
-          "example": 1
-        }
-      }
-    }
   },
-  "securitySchemes": {
-    "bearerToken": {
-      "description": "Insert Token, You can get it after login",
-      "type": "http",
-      "scheme": "bearer",
-      "bearerFormat": "JWT"
+  "components": {
+    "schemas": {
+      "Users": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "example": "Zaki"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Jaaa"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "zaki@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "example": "jaki1234"
+          },
+          "username": {
+            "type": "string",
+            "example": "zaki"
+          },
+          "country_code": {
+            "type": "string",
+            "example": "+62"
+          },
+          "phone_number": {
+            "type": "string",
+            "example": "081384753928"
+          },
+          "address": {
+            "type": "string",
+            "example": "Jl. Mejikuhibiniu"
+          },
+          "photo": {
+            "type": "string",
+            "format": "binary",
+            "example": "url photo"
+          },
+          "role": {
+            "type": "integer",
+            "example": "1"
+          }
+        }
+      },
+      "Airports": {
+        "type": "object",
+        "properties": {
+          "airport_name": {
+            "type": "string",
+            "example": "Ngurah Rai International Airport"
+          },
+          "airport_location": {
+            "type": "string",
+            "example": "Denpasar, Bali, Indonesia"
+          }
+        }
+      },
+      "Passengers": {
+        "type": "object",
+        "properties": {
+          "passenger_name": {
+            "type": "string",
+            "example": "Selly Bintang Melananda"
+          },
+          "nik": {
+            "type": "string",
+            "example": "3510023553000982"
+          }
+        }
+      },
+      "Tickets": {
+        "type": "object",
+        "properties": {
+          "id_airport": {
+            "type": "integer",
+            "example": 1
+          },
+          "departure_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "arrival_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "class": {
+            "type": "string",
+            "example": "Ekonomi"
+          },
+          "price": {
+            "type": "integer",
+            "example": "8000000"
+          }
+        }
+      },
+      "Bookings": {
+        "type": "object",
+        "properties": {
+          "id_passenger": {
+            "type": "integer",
+            "example": 1
+          },
+          "id_ticket": {
+            "type": "integer",
+            "example": 1
+          },
+          "id_users": {
+            "type": "integer",
+            "example": 1
+          },
+          "total_booking": {
+            "type": "integer",
+            "example": 1
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerToken": {
+        "description": "Insert Token, You can get it after login",
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
     }
   }
 }
-}
+
+
+
 

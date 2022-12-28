@@ -16,7 +16,7 @@ const login = async (req, res) => {
     if (!validPassword)
       return res.status(400).json({ message: "Password salah" });
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
-    res.status(200).json({ message: "Login berhasil", token });
+    res.status(200).json({ message: "Login berhasil", token, username:user.username, role:user.role, photo:user.photo });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }

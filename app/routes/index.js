@@ -16,7 +16,7 @@ router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // // API Auth Login
 router.use('/api', authRoutes)
 router.use('/api/airports', airportRoutes)
-router.use('/api/passenger', passengerRoutes)
+router.use('/api/passengers', passengerRoutes)
 router.use('/api/tickets', ticketRoutes)
 router.use('/api/bookings', bookingRoutes)
 

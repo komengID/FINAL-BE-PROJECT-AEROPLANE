@@ -23,7 +23,10 @@ module.exports = (sequelize, DataTypes) => {
     country_code: DataTypes.STRING,
     phone_number: DataTypes.STRING,
     address: DataTypes.STRING,
-    photo: DataTypes.TEXT,
+    photo: {
+      type: DataTypes.TEXT,
+      defaultValue: "https://i.pinimg.com/1200x/3f/11/d1/3f11d1bc55573b7ca55735f94a33ae35.jpg",
+    },
     role: {
       type: DataTypes.INTEGER,
       defaultValue: 2,

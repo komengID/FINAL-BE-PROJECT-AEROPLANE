@@ -70,6 +70,20 @@ const verify = async (req, res) => {
   }
 };
 
+const getAllUsers = async (req, res) => {
+  console.log(req.user)
+  try {
+    const allUsers = await User.findAll()
+    res.status(200).json({
+      allUsers,
+    });
+  } catch (error) {
+    res.status(error.statusCode || 500).json({
+      message: error.message,
+    });
+  }
+};
+
 const getProfile = async (req, res) => {
   console.log(req.user)
   try {
@@ -159,6 +173,7 @@ module.exports = {
   login,
   register,
   verify,
+  getAllUsers,
   getProfile,
   updateProfile,
   loginGoogle,

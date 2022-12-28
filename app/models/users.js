@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     address: DataTypes.STRING,
     photo: {
       type: DataTypes.TEXT,
-      defaultValue: "https://i.pinimg.com/1200x/3f/11/d1/3f11d1bc55573b7ca55735f94a33ae35.jpg",
+      defaultValue: "https://pinhome-blog-assets-public.s3.amazonaws.com/2021/11/Gambar-Karikatur-Anak.jpg"  
     },
     role: {
       type: DataTypes.INTEGER,

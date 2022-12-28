@@ -73,7 +73,9 @@ const verify = async (req, res) => {
 const getAllUsers = async (req, res) => {
   console.log(req.user)
   try {
-    const allUsers = await User.findAll()
+    const allUsers = await User.findAll({
+      order: [["id", "DESC",],],
+    })
     res.status(200).json({
       allUsers,
     });
@@ -90,7 +92,7 @@ const getProfile = async (req, res) => {
     const profile = await User.findOne(
       {
         where: {
-          id: req.user.id
+          id: req.body.id
         }
       });
     res.status(200).json({
@@ -104,8 +106,8 @@ const getProfile = async (req, res) => {
 };
 
 const updateProfile = async (req, res) => {
-  const { id, } = req.user;
-  const { file, } = req;
+  const { id, } = req.body;
+  const { file, } = req.file;
   const {
     firstName,
     lastName,

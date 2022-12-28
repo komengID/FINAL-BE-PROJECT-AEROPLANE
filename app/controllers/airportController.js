@@ -2,7 +2,9 @@ const { airport } = require('../models');
 
 const getAirport = async (req, res) => {
     try {
-        const airports = await airport.findAll();
+        const airports = await airport.findAll({
+            order: [["id", "DESC",],],
+        });
         res.status(200).json({
             message: 'data semua bandara',
             airports,

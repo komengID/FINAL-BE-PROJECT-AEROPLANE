@@ -726,7 +726,7 @@
         }
       }
     },
-    "/api/passenger": {
+    "/api/passengers": {
       "post": {
         "summary": "Create Passenger",
         "tags": ["Passenger"],

@@ -6,6 +6,7 @@ const Sequelize = require('sequelize');
 const getTicket = async (req, res) => {
     try {
         const tickets = await ticket.findAll({
+            order: [["id", "DESC",],],
             include: [
                 {
                     model: airport

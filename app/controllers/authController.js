@@ -16,7 +16,7 @@ const login = async (req, res) => {
     if (!validPassword)
       return res.status(400).json({ message: "Password salah" });
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
-    res.status(200).json({ message: "Login berhasil", token });
+    res.status(200).json({ message: "Login berhasil", token, username: user.username, role: user.role, photo: user.photo });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
@@ -67,6 +67,22 @@ const verify = async (req, res) => {
     res.status(200).json({ message: "User berhasil diverifikasi" });
   } catch (error) {
     res.status(400).json({ message: "Token tidak valid" });
+  }
+};
+
+const getAllUsers = async (req, res) => {
+  console.log(req.user)
+  try {
+    const allUsers = await User.findAll({
+      order: [["id", "DESC",],],
+    })
+    res.status(200).json({
+      allUsers,
+    });
+  } catch (error) {
+    res.status(error.statusCode || 500).json({
+      message: error.message,
+    });
   }
 };
 
@@ -159,6 +175,7 @@ module.exports = {
   login,
   register,
   verify,
+  getAllUsers,
   getProfile,
   updateProfile,
   loginGoogle,

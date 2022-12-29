@@ -23,7 +23,10 @@ module.exports = (sequelize, DataTypes) => {
     country_code: DataTypes.STRING,
     phone_number: DataTypes.STRING,
     address: DataTypes.STRING,
-    photo: DataTypes.TEXT,
+    photo: {
+      type: DataTypes.TEXT,
+      defaultValue: "https://pinhome-blog-assets-public.s3.amazonaws.com/2021/11/Gambar-Karikatur-Anak.jpg"  
+    },
     role: {
       type: DataTypes.INTEGER,
       defaultValue: 2,

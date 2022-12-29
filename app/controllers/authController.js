@@ -16,7 +16,7 @@ const login = async (req, res) => {
     if (!validPassword)
       return res.status(400).json({ message: "Password salah" });
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
-    res.status(200).json({ message: "Login berhasil", token, username:user.username, role:user.role, photo:user.photo });
+    res.status(200).json({ message: "Login berhasil", token, username: user.username, role: user.role, photo: user.photo });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
@@ -92,7 +92,7 @@ const getProfile = async (req, res) => {
     const profile = await User.findOne(
       {
         where: {
-          id: req.body.id
+          id: req.user.id
         }
       });
     res.status(200).json({
@@ -106,7 +106,7 @@ const getProfile = async (req, res) => {
 };
 
 const updateProfile = async (req, res) => {
-  const { id, } = req.body;
+  const { id, } = req.user;
   const { file, } = req.file;
   const {
     firstName,

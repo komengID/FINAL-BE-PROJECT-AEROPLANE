@@ -25,10 +25,7 @@ const getTicket = async (req, res) => {
 const getTicketById = async (req, res) => {
     try {
         const { id, } = req.params;
-        const getTicket = await ticket.findOne(
-            {
-                where: { id, },
-            },
+        const getTicket = await ticket.findByPk(id,
             {
                 include: [
                     {

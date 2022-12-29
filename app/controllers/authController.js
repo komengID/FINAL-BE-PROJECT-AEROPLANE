@@ -107,7 +107,7 @@ const getProfile = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   const { id, } = req.user;
-  const { file, } = req.file;
+  const { file, } = req;
   const {
     firstName,
     lastName,

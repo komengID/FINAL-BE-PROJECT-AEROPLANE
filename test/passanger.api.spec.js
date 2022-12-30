@@ -6,7 +6,7 @@ require ("dotenv").config();
 
 describe ("Create Passenger", () =>{
     it("Succes Create Passanger", async () =>{
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsImlhdCI6MTY3MjQyMDc3OX0.jIrZ4_IHaHc4ZCSbRF1SGLEgtREGHXQRvfpXQNV1yUQ";
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTY3MjM5Mjc2N30.XQilrMSQcPF0sydg792FTeHSqnhaQhbDIrVQeuQzvJk";
         const createPassenger = {
             "passenger_name":"Selly Bintang Melananda",
             "nik":"3510023553000982"
@@ -30,7 +30,7 @@ describe ("Create Passenger", () =>{
         expect(response.statusCode).toBe(400);
     });
     it("Not Found Passanger", async () =>{
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTY3MjM5Mjc2N30.XQilrMSQcPF0sydg792FTeHSqnhaQhbDIrVQeuQzvJk";
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsImlhdCI6MTY3MjQyMDc3OX0.jIrZ4_IHaHc4ZCSbRF1SGLEgtREGHXQRvfpXQNV1yUQ";
         const response = await request(app)
         const createPassenger = {
             "passenger_name":"Selly Bintang Melananda",

@@ -1,16 +1,15 @@
 'use strict';
 
+const airportsData = require('../data/airportsData');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('airport', [{
-      airport_name: "Tjilik Riwut International Airport",
-      airport_location: "Palangkaraya, Kalimantan Tengah, Indonesia"
-    }]);
+    await queryInterface.bulkInsert('airports', airportsData, {})
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('airport', null, {});
+    await queryInterface.bulkDelete('airports', null, {});
   }
 };
 

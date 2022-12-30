@@ -1,7 +1,7 @@
 const express = require('express');
 
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('../../swagger.json');
+const swaggerDocument = require('../../docs/swagger.json');
 const router = express.Router();
 const authRoutes = require('./authRoutes');
 const airportRoutes = require('./airportRoutes');

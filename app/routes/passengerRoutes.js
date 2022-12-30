@@ -9,7 +9,7 @@ const {
     deletePassenger,
 } = require('../controllers/passengerController')
 
-router.get('/', getPassenger);
+router.get('/', auth, getPassenger);
 router.get('/:id', getPassengerById);
 router.post('/', addPassenger);
 router.put('/:id', auth, isAdmin, updatePassenger);

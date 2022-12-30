@@ -57,22 +57,29 @@ describe("API Register", () => {
     });
   });
 
-  describe("API Update Users", () => {
-    it("update by id Update Users", async () => {
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTY3MjM5Mjc2N30.XQilrMSQcPF0sydg792FTeHSqnhaQhbDIrVQeuQzvJk";
-      const idProfile ={
-        id : 11
-      }
-      const picture = path.resolve(__dirname, './person.jpg');
-      const response = await request(app)
-      .put(`/api/auth/profile/${idProfile.id}`)
-      .set('Authorization', 'Bearer ' + token)
-      .attach('photo', picture)
-      expect(response.statusCode).toBe(200);
-    });
-  });
+  // describe("API Update Users", () => {
+  //   it("update by id Update Users", async () => {
+  //     const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTY3MjM5Mjc2N30.XQilrMSQcPF0sydg792FTeHSqnhaQhbDIrVQeuQzvJk";
+  //     const idProfile ={
+  //       id : 11
+  //     }
+  //     const picture = path.resolve(__dirname, './person.jpg');
+  //     const response = await request(app)
+  //     .put(`/api/auth/profile/${idProfile.id}`)
+  //     .set('Authorization', 'Bearer ' + token)
+  //     .attach('photo', picture)
+  //     expect(response.statusCode).toBe(200);
+  //   });
+  // });
 
-
-
-
-  
+  describe('API update profile', () => {
+    var auth = {};
+    beforeAll(loginUser(auth));
+it('profil berhasil diubah', async () => {
+  const response = await request(app)
+    .put('/api/auth/update-profile')
+    .set('Authorization', auth.token)
+    .send({ fullName: 'stringingg' });
+  expect(response.statusCode).toBe(200);
+});
+});

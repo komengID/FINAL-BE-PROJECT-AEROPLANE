@@ -11,7 +11,7 @@ const {
 }= require('../controllers/bookingController');
 
 
-router.get('', auth, getBooking);
+router.get('', auth, isAdmin, getBooking);
 router.get('/user', auth, bookingsUser);
 router.get('/:id', auth, getBookingById);
 router.post('', auth, addBooking);

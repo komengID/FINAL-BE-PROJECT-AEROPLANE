@@ -1587,7 +1587,7 @@
               }
             }
           },
-          "401": {
+          "403": {
             "description": "Invalid token. Unauthorized.",
             "content": {
               "application/json": {
@@ -1691,7 +1691,7 @@
               }
             }
           },
-          "404": {
+          "401": {
             "description": "The transaction is not found.",
             "content": {
               "application/json": {

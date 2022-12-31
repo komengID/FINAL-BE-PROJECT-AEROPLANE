@@ -460,7 +460,7 @@
               }
             }
           },
-          "401": {
+          "403": {
             "description": "Invalid token. Unauthorized.",
             "content": {
               "application/json": {
@@ -532,7 +532,7 @@
               }
             }
           },
-          "404": {
+          "401": {
             "description": "The airport id is not found.",
             "content": {
               "application/json": {
@@ -604,7 +604,7 @@
               }
             }
           },
-          "401": {
+          "403": {
             "description": "Invalid token. Unauthorized.",
             "content": {
               "application/json": {
@@ -624,7 +624,7 @@
               }
             }
           },
-          "404": {
+          "401": {
             "description": "The airport id is not found.",
             "content": {
               "application/json": {
@@ -683,7 +683,7 @@
               }
             }
           },
-          "401": {
+          "403": {
             "description": "Invalid token. Unauthorized.",
             "content": {
               "application/json": {
@@ -703,7 +703,7 @@
               }
             }
           },
-          "404": {
+          "401": {
             "description": "The airport id is not found.",
             "content": {
               "application/json": {

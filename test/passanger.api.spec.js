@@ -5,7 +5,7 @@ const {faker} = require ('@faker-js/faker');
 require ("dotenv").config();
 
 describe ("Create Passenger", () =>{
-    it("Succes Create Passanger", async () =>{
+    it("Succes Create Passenger", async () =>{
         const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTY3MjM5Mjc2N30.XQilrMSQcPF0sydg792FTeHSqnhaQhbDIrVQeuQzvJk";
         const createPassenger = {
             "passenger_name":"Selly Bintang Melananda",
@@ -17,7 +17,7 @@ describe ("Create Passenger", () =>{
         .send(createPassenger);
         expect(response.statusCode).toBe(200);
     });
-    it("Invalid Token Passanger", async () =>{
+    it("Invalid Token Passenger", async () =>{
         const token = "";
         const createPassenger = {
             "passenger_name":"Selly Bintang Melananda",
@@ -27,19 +27,7 @@ describe ("Create Passenger", () =>{
         .post("/api/passengers/")
         .set("Authorization", "Bearer " + token)
         .send(createPassenger);
-        expect(response.statusCode).toBe(400);
-    });
-    it("Not Found Passanger", async () =>{
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsImlhdCI6MTY3MjQyMDc3OX0.jIrZ4_IHaHc4ZCSbRF1SGLEgtREGHXQRvfpXQNV1yUQ";
-        const response = await request(app)
-        const createPassenger = {
-            "passenger_name":"Selly Bintang Melananda",
-            "nik":"3510023553000982"
-        }
-        .post("/api/passengers/")
-        .set("Authorization", "Bearer " + token)
-        .send(createPassenger);
-        expect(response.statusCode).toBe(404);
+        expect(response.statusCode).toBe(401);
     });
 });
 describe ("Data All Passengers", () =>{
@@ -50,22 +38,6 @@ describe ("Data All Passengers", () =>{
         .set("Authorization", "Bearer " + token)
         expect(response.statusCode).toBe(200);
     });
-    it("Invalid Token Passanger", async () => {
-        const token = "";
-        const response = await request(app)
-          .get("/api/passengers/")
-          .set("Authorization", "Bearer " + token)
-           expect(response.statusCode).toBe(400);
-      });
-    
-    it("Not Found Passanger", async () =>{
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsImlhdCI6MTY3MjQyMDc3OX0.jIrZ4_IHaHc4ZCSbRF1SGLEgtREGHXQRvfpXQNV1yUQ";
-        const response = await request(app)
-        .get("/api/passengers/")
-        .set("Authorization", "Bearer " + token)
-        expect(response.statusCode).toBe(404);
-    });
-      
 });
 
 describe ("Data Passengers", () =>{
@@ -79,25 +51,15 @@ describe ("Data Passengers", () =>{
         .set("Authorization", "Bearer " + token)
         expect(response.statusCode).toBe(200);
     });
-    it("Invalid Token Passanger", async () =>{
+    it("Not Found Passanger", async () =>{
         const token = "";
         const IdPassengers ={
-            id:11
+            id:99999999
         }
         const response = await request(app)
         .get(`/api/passengers/${IdPassengers.id}`)
         .set("Authorization", "Bearer " + token)
-        expect(response.statusCode).toBe(400);
-    });
-    it("Not Found Passanger", async () =>{
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsImlhdCI6MTY3MjQyMDc3OX0.jIrZ4_IHaHc4ZCSbRF1SGLEgtREGHXQRvfpXQNV1yUQ";
-        const IdPassengers ={
-            id:11
-        }
-        const response = await request(app)
-        .get(`/api/passengers/${IdPassengers.id}`)
-        .set("Authorization", "Bearer " + token)
-        expect(response.statusCode).toBe(404);
+        expect(response.statusCode).toBe(401);
     });
 });
 describe ("Data Update Passengers", () =>{
@@ -117,9 +79,9 @@ describe ("Data Update Passengers", () =>{
         expect(response.statusCode).toBe(200);
     });
     it("Invalid Token Passanger", async () =>{
-        const token = "";
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTI3LCJpYXQiOjE2NzI0NzIyNDR9.kbaDSbcXCIlxuO8WNgL9Ft3s6p_UU0TUnOVL2Fz-rVA";
         const IdPassengers ={
-            id:11
+            id:1
         }
         const passengers ={
             "passenger_name":"Selly Bintang Melananda",
@@ -129,12 +91,12 @@ describe ("Data Update Passengers", () =>{
         .put(`/api/passengers/${IdPassengers.id}`)
         .set("Authorization", "Bearer " + token)
         .send(passengers)
-        expect(response.statusCode).toBe(400);
+        expect(response.statusCode).toBe(403);
     });
     it("Not Found Passanger", async () =>{
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsImlhdCI6MTY3MjQyMDc3OX0.jIrZ4_IHaHc4ZCSbRF1SGLEgtREGHXQRvfpXQNV1yUQ";
+        const token = "";
         const IdPassengers ={
-            id:11
+            id:99999999999
         }
         const passengers ={
             "passenger_name":"Selly Bintang Melananda",
@@ -144,7 +106,55 @@ describe ("Data Update Passengers", () =>{
         .put(`/api/passengers/${IdPassengers.id}`)
         .set("Authorization", "Bearer " + token)
         .send(passengers)
-        expect(response.statusCode).toBe(400);
+        expect(response.statusCode).toBe(401);
+    });
+    
+});
+describe ("Delete Passengers", () =>{
+    it("Success Delete Passanger", async () =>{
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTY3MjM5Mjc2N30.XQilrMSQcPF0sydg792FTeHSqnhaQhbDIrVQeuQzvJk";
+        const IdPassengers ={
+            id:11
+        }
+        const passengers ={
+            "passenger_name":"Selly Bintang Melananda",
+            "nik":"3510023553000982"
+        }
+        const response = await request(app)
+        .delete(`/api/passengers/${IdPassengers.id}`)
+        .set("Authorization", "Bearer " + token)
+        .send(passengers)
+        expect(response.statusCode).toBe(200);
+    });
+    it("Invalid Token Passenger (Unauthorized)", async () =>{
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTI3LCJpYXQiOjE2NzI0NzIyNDR9.kbaDSbcXCIlxuO8WNgL9Ft3s6p_UU0TUnOVL2Fz-rVA";
+        const IdPassengers ={
+            id:1
+        }
+        const passengers ={
+            "passenger_name":"Selly Bintang Melananda",
+            "nik":"3510023553000982"
+        }
+        const response = await request(app)
+        .delete(`/api/passengers/${IdPassengers.id}`)
+        .set("Authorization", "Bearer " + token)
+        .send(passengers)
+        expect(response.statusCode).toBe(403);
+    });
+    it("Not Found Passanger ", async () =>{
+        const token = "";
+        const IdPassengers ={
+            id:9999999
+        }
+        const passengers ={
+            "passenger_name":"Selly Bintang Melananda",
+            "nik":"3510023553000982"
+        }
+        const response = await request(app)
+        .delete(`/api/passengers/${IdPassengers.id}`)
+        .set("Authorization", "Bearer " + token)
+        .send(passengers)
+        expect(response.statusCode).toBe(401);
     });
     
 });

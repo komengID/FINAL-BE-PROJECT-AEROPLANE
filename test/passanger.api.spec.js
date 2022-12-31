@@ -79,7 +79,7 @@ describe ("Data Update Passengers", () =>{
         expect(response.statusCode).toBe(200);
     });
     it("Invalid Token Passanger", async () =>{
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTI3LCJpYXQiOjE2NzI0NzIyNDR9.kbaDSbcXCIlxuO8WNgL9Ft3s6p_UU0TUnOVL2Fz-rVA";
+        const token = "";
         const IdPassengers ={
             id:1
         }
@@ -91,7 +91,7 @@ describe ("Data Update Passengers", () =>{
         .put(`/api/passengers/${IdPassengers.id}`)
         .set("Authorization", "Bearer " + token)
         .send(passengers)
-        expect(response.statusCode).toBe(403);
+        expect(response.statusCode).toBe(401);
     });
     it("Not Found Passanger", async () =>{
         const token = "";

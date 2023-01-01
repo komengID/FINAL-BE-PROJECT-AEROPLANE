@@ -5,7 +5,7 @@ const {faker} = require ('@faker-js/faker');
 require ("dotenv").config();
 
 describe ("Create Booking", () =>{
-    it("Succes Create booking", async () =>{
+    it("Success Create booking", async () =>{
         const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTY3MjM5Mjc2N30.XQilrMSQcPF0sydg792FTeHSqnhaQhbDIrVQeuQzvJk";
         const createbooking = {
             "id": 1,
@@ -55,13 +55,12 @@ describe ("Data All Booking", () =>{
 describe ("Data Booking User", () =>{
     it("Success Show Data Booking User", async () =>{
         const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTY3MjM5Mjc2N30.XQilrMSQcPF0sydg792FTeHSqnhaQhbDIrVQeuQzvJk";
-       
         const response = await request(app)
         .get("/api/bookings/user")
         .set("Authorization", "Bearer " + token)
         expect(response.statusCode).toBe(200);
     });
-    it("Invalid Token Booking", async () =>{
+    it("Invalid Token User Booking", async () =>{
         const token = "";
         const response = await request(app)
         .get("/api/bookings/user")

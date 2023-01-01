@@ -1208,7 +1208,7 @@
               }
             }
           },
-          "404": {
+          "401": {
             "description": "Ticket is not found.",
             "content": {
               "application/json": {
@@ -1254,7 +1254,7 @@
               }
             }
           },
-          "404": {
+          "401": {
             "description": "The ticket id is not found.",
             "content": {
               "application/json": {

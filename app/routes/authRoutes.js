@@ -12,6 +12,6 @@ router.post('/auth/verify', verify);
 router.get('/auth/allusers', auth, isAdmin, getAllUsers);
 router.get('/auth/profile', auth, getProfile);
 // router.get('/auth/google-login', loginGoogle);
-router.put('/auth/profile/:id', auth, upload.single('image'), updateProfile);
+router.put('/auth/profile', auth, upload.single('image'), updateProfile);
 
 module.exports = router;

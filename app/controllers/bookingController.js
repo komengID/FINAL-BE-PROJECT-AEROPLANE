@@ -4,7 +4,7 @@ const { booking, ticket, passenger, Users } = require('../models');
 let getBooking = async (req, res) => {
     try {
         let bookings = await booking.findAll({
-            orders:["createdAt", "DESC"]
+            orders: ["createdAt", "DESC"]
         },
             {
                 include: [
@@ -32,25 +32,25 @@ let getBooking = async (req, res) => {
 
 let bookingsUser = async (req, res) => {
     try {
-        let bookings = await Users.findByPk(req.user.id,
-            {orders:["createdAt", "DESC"]
-            },
-            {
-                include: [
-                    {
-                        model: booking,
-                        include: [
-                            {
-                                model: ticket,
-                            },
-                            {
-                                model: passenger
-                            },
-                        ],
-                    },
-                ],
-            }
-        ) ;
+        let bookings = await booking.findAll({
+            where: { id_users: req.user.id },
+            order: [
+                ['createdAt', 'DESC']
+            ],
+            include: [
+                {
+                    model: booking,
+                    include: [
+                        {
+                            model: ticket,
+                        },
+                        {
+                            model: passenger
+                        },
+                    ],
+                },
+            ],
+        });
         res.status(200).json({
             bookings,
         });

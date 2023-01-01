@@ -39,7 +39,7 @@ let bookingsUser = async (req, res) => {
             ],
             include: [
                 {
-                    model: booking,
+                    model: Users,
                 },
                 {
                     model: ticket,

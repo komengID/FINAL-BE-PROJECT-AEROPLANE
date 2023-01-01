@@ -2,7 +2,7 @@ const { model } = require("sequelize");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models").Users;
-const googleOauth2 = require("../utils/oauth2/google");
+// const googleOauth2 = require("../utils/oauth2/google");
 // const { redirect } = require("express/lib/response");
 const imagekit = require("../../libs/imageKit");
 
@@ -117,7 +117,7 @@ const updateProfile = async (req, res) => {
       phone_number,
       address,
     } = req.body;
-  
+    if(file){
       const validFormat =
         file.mimetype === "image/jpeg" ||
         file.mimetype === "image/png" ||
@@ -136,7 +136,6 @@ const updateProfile = async (req, res) => {
         file: file.buffer,
         fileName: `IMG-${Date.now()}.${extension}`,
       });
-  
       const updatedUser = await User.update(
         {
           firstName,
@@ -149,7 +148,21 @@ const updateProfile = async (req, res) => {
         },
         { where: { id }, }
       );
-      res.status(200).json({ message: "Profile berhasil diupdate", updatedUser });
+      return res.status(200).json({ message: "Profile berhasil diupdate", updatedUser });
+    }
+    const updatedUser = await User.update(
+      {
+        firstName,
+        lastName,
+        username,
+        country_code,
+        phone_number,
+        address,
+      },
+      { where: { id }, }
+    );
+    res.status(200).json({ message: "Profile berhasil diupdate", updatedUser });
+
   }
   catch (error) {
     res.status(error.statusCode || 500).json({
@@ -157,24 +170,24 @@ const updateProfile = async (req, res) => {
     });
   }
 };
-const loginGoogle = async (req, res) => {
-  try {
-    console.log('masuk');
-    const code = req.query.code;
-    if (!code) {
-      const url = googleOauth2.generateAuthURL();
-      return res.redirect(url);
-    }
-    const tokens = await googleOauth2.setCredentials(code);
-    const { data } = await googleOauth2.getUserData();
-    return res.status(200).json({
-      data,
-      tokens,
-    });
-  } catch (error) {
-    console.log(error)
-  }
-};
+// const loginGoogle = async (req, res) => {
+//   try {
+//     console.log('masuk');
+//     const code = req.query.code;
+//     if (!code) {
+//       const url = googleOauth2.generateAuthURL();
+//       return res.redirect(url);
+//     }
+//     const tokens = await googleOauth2.setCredentials(code);
+//     const { data } = await googleOauth2.getUserData();
+//     return res.status(200).json({
+//       data,
+//       tokens,
+//     });
+//   } catch (error) {
+//     console.log(error)
+//   }
+// };
 
 module.exports = {
   login,
@@ -183,5 +196,5 @@ module.exports = {
   getAllUsers,
   getProfile,
   updateProfile,
-  loginGoogle,
+  // loginGoogle,
 };

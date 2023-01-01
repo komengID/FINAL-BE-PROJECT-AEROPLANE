@@ -11,8 +11,8 @@ const {
 } = require('../controllers/ticketController');
 
 router.get('', getTicket);
-router.get('/search', searchTicket);
-router.get('/:id', getTicketById);
+router.get('/search', auth, searchTicket);
+router.get('/:id', auth, getTicketById);
 router.post('', auth, isAdmin, addTicket);
 router.put('/:id', auth, isAdmin, updateTicket);
 router.delete('/:id', auth, isAdmin, deleteTicket);

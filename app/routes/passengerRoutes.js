@@ -9,9 +9,9 @@ const {
     deletePassenger,
 } = require('../controllers/passengerController')
 
-router.get('/', getPassenger);
-router.get('/:id', getPassengerById);
-router.post('/', addPassenger);
+router.get('/', auth, getPassenger);
+router.get('/:id', auth, getPassengerById);
+router.post('/', auth, addPassenger);
 router.put('/:id', auth, isAdmin, updatePassenger);
 router.delete('/:id', auth, isAdmin, deletePassenger);
 

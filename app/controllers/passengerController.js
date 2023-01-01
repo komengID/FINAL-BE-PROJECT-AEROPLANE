@@ -3,7 +3,9 @@ const { passenger } = require('../models');
 const getPassenger = async (res, req) =>{
         
     try {
-        const passengers =await passenger.findAll();
+        const passengers =await passenger.findAll({
+            order: [["createdAt", "DESC",],],
+        });
         req.status(200).json({
             message: 'data semua penumpang', passengers
         })

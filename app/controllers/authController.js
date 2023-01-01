@@ -2,7 +2,7 @@ const { model } = require("sequelize");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models").Users;
-const googleOauth2 = require("../utils/oauth2/google");
+// const googleOauth2 = require("../utils/oauth2/google");
 // const { redirect } = require("express/lib/response");
 const imagekit = require("../../libs/imageKit");
 
@@ -16,7 +16,7 @@ const login = async (req, res) => {
     if (!validPassword)
       return res.status(400).json({ message: "Password salah" });
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
-    res.status(200).json({ message: "Login berhasil", token, username: user.username, role: user.role, photo: user.photo });
+    res.status(200).json({ message: "Login berhasil", token, username:user.username, role:user.role, photo:user.photo });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
@@ -92,7 +92,7 @@ const getProfile = async (req, res) => {
     const profile = await User.findOne(
       {
         where: {
-          id: req.user.id
+          id: req.body.id
         }
       });
     res.status(200).json({
@@ -106,37 +106,50 @@ const getProfile = async (req, res) => {
 };
 
 const updateProfile = async (req, res) => {
-  const { id, } = req.user;
-  const { file, } = req;
-  const {
-    firstName,
-    lastName,
-    username,
-    country_code,
-    phone_number,
-    address,
-  } = req.body;
-
-  if (file) {
-    const validFormat =
-      file.mimetype === "image/jpeg" ||
-      file.mimetype === "image/png" ||
-      file.mimetype === "image/jpg" ||
-      file.mimetype === "image/gif";
-    if (!validFormat) {
-      return res.status(400).json({
-        status: "failed",
-        message: "Format file tidak valid",
+  try{
+    const file  = req.file;
+    const {
+      id,
+      firstName,
+      lastName,
+      username,
+      country_code,
+      phone_number,
+      address,
+    } = req.body;
+    if(file){
+      const validFormat =
+        file.mimetype === "image/jpeg" ||
+        file.mimetype === "image/png" ||
+        file.mimetype === "image/jpg" ||
+        file.mimetype === "image/gif";
+      if (!validFormat) {
+        return res.status(400).json({
+          status: "failed",
+          message: "Format file tidak valid",
+        });
+      }
+      const split = file.originalname.split('.');
+      const extension = split[split.length - 1];
+  
+      const img = await imagekit.upload({
+        file: file.buffer,
+        fileName: `IMG-${Date.now()}.${extension}`,
       });
+      const updatedUser = await User.update(
+        {
+          firstName,
+          lastName,
+          username,
+          country_code,
+          phone_number,
+          address,
+          photo: img.url,
+        },
+        { where: { id }, }
+      );
+      return res.status(200).json({ message: "Profile berhasil diupdate", updatedUser });
     }
-    const split = file.originalname.split('.');
-    const extension = split[split.length - 1];
-
-    const img = await imagekit.upload({
-      file: file.buffer.toString('base64'),
-      fileName: `${id}.${extension}`,
-    });
-
     const updatedUser = await User.update(
       {
         firstName,
@@ -145,31 +158,36 @@ const updateProfile = async (req, res) => {
         country_code,
         phone_number,
         address,
-        photo: img.url,
       },
-      { where: { id }, returning: true }
+      { where: { id }, }
     );
     res.status(200).json({ message: "Profile berhasil diupdate", updatedUser });
-  };
-};
-const loginGoogle = async (req, res) => {
-  try {
-    console.log('masuk');
-    const code = req.query.code;
-    if (!code) {
-      const url = googleOauth2.generateAuthURL();
-      return res.redirect(url);
-    }
-    const tokens = await googleOauth2.setCredentials(code);
-    const { data } = await googleOauth2.getUserData();
-    return res.status(200).json({
-      data,
-      tokens,
+
+  }
+  catch (error) {
+    res.status(error.statusCode || 500).json({
+      message: error.message,
     });
-  } catch (error) {
-    console.log(error)
   }
 };
+// const loginGoogle = async (req, res) => {
+//   try {
+//     console.log('masuk');
+//     const code = req.query.code;
+//     if (!code) {
+//       const url = googleOauth2.generateAuthURL();
+//       return res.redirect(url);
+//     }
+//     const tokens = await googleOauth2.setCredentials(code);
+//     const { data } = await googleOauth2.getUserData();
+//     return res.status(200).json({
+//       data,
+//       tokens,
+//     });
+//   } catch (error) {
+//     console.log(error)
+//   }
+// };
 
 module.exports = {
   login,
@@ -178,5 +196,5 @@ module.exports = {
   getAllUsers,
   getProfile,
   updateProfile,
-  loginGoogle,
+  // loginGoogle,
 };

@@ -16,7 +16,7 @@ const login = async (req, res) => {
     if (!validPassword)
       return res.status(400).json({ message: "Password salah" });
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
-    res.status(200).json({ message: "Login berhasil", token, username:user.username, role:user.role, photo:user.photo });
+    res.status(200).json({ message: "Login berhasil", token, username: user.username, role: user.role, photo: user.photo });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
@@ -92,7 +92,7 @@ const getProfile = async (req, res) => {
     const profile = await User.findOne(
       {
         where: {
-          id: req.body.id
+          id: req.user.id
         }
       });
     res.status(200).json({
@@ -106,10 +106,9 @@ const getProfile = async (req, res) => {
 };
 
 const updateProfile = async (req, res) => {
-  try{
-    const file  = req.file;
+  try {
+    const file = req.file;
     const {
-      id,
       firstName,
       lastName,
       username,
@@ -117,7 +116,7 @@ const updateProfile = async (req, res) => {
       phone_number,
       address,
     } = req.body;
-    if(file){
+    if (file) {
       const validFormat =
         file.mimetype === "image/jpeg" ||
         file.mimetype === "image/png" ||
@@ -131,7 +130,7 @@ const updateProfile = async (req, res) => {
       }
       const split = file.originalname.split('.');
       const extension = split[split.length - 1];
-  
+
       const img = await imagekit.upload({
         file: file.buffer,
         fileName: `IMG-${Date.now()}.${extension}`,
@@ -146,7 +145,7 @@ const updateProfile = async (req, res) => {
           address,
           photo: img.url,
         },
-        { where: { id }, }
+        { where: { id: req.user.id }, }
       );
       return res.status(200).json({ message: "Profile berhasil diupdate", updatedUser });
     }
@@ -159,7 +158,7 @@ const updateProfile = async (req, res) => {
         phone_number,
         address,
       },
-      { where: { id }, }
+      { where: { id: req.user.id }, }
     );
     res.status(200).json({ message: "Profile berhasil diupdate", updatedUser });
 

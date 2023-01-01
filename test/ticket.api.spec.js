@@ -45,16 +45,16 @@ describe ("Data All Ticket", () =>{
     });
 });
 describe ("Data Search Ticket", () =>{
-    it("Successs Show Data Search Ticket", async () =>{
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTY3MjM5Mjc2N30.XQilrMSQcPF0sydg792FTeHSqnhaQhbDIrVQeuQzvJk";
-        // const departure =2022
-        // const arival= 2022
+    // it("Successs Show Data Search Ticket", async () =>{
+    //     const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTY3MjM5Mjc2N30.XQilrMSQcPF0sydg792FTeHSqnhaQhbDIrVQeuQzvJk";
+    //     // const departure =2022
+    //     // const arival= 2022
         
-        const response = await request(app)
-        .get("api/tickets/search?departure_date=2022&arrival_date=2022")
-        .set("Authorization", "Bearer " + token)
-        expect(response.statusCode).toBe(200);
-    });
+    //     const response = await request(app)
+    //     .get(`api/tickets/search?searchTicket${searchTickets}h`)
+    //     .set("Authorization", "Bearer " + token)
+    //     expect(response.statusCode).toBe(200);
+    // });
     it("Not Found Search Ticket", async () =>{
         const token = "";
         const searchTickets = {

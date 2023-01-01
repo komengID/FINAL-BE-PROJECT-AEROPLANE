@@ -3,7 +3,9 @@ const { booking, ticket, passenger, Users } = require('../models');
 
 let getBooking = async (req, res) => {
     try {
-        let bookings = await booking.findAll(
+        let bookings = await booking.findAll({
+            orders:["createdAt", "DESC"]
+        },
             {
                 include: [
                     {
@@ -31,6 +33,8 @@ let getBooking = async (req, res) => {
 let bookingsUser = async (req, res) => {
     try {
         let bookings = await Users.findByPk(req.user.id,
+            {orders:["createdAt", "DESC"]
+            },
             {
                 include: [
                     {
@@ -46,7 +50,7 @@ let bookingsUser = async (req, res) => {
                     },
                 ],
             }
-        );
+        ) ;
         res.status(200).json({
             bookings,
         });

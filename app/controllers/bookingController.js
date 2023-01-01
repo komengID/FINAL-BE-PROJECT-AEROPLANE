@@ -40,15 +40,14 @@ let bookingsUser = async (req, res) => {
             include: [
                 {
                     model: booking,
-                    include: [
-                        {
-                            model: ticket,
-                        },
-                        {
-                            model: passenger
-                        },
-                    ],
                 },
+                {
+                    model: ticket,
+                },
+                {
+                    model: passenger
+                },
+
             ],
         });
         res.status(200).json({

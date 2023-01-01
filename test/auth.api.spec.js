@@ -21,6 +21,21 @@ describe("API Register", () => {
       const response = await request(app).post('/api/auth/register').send(users);
       expect(response.statusCode).toBe(201);
     });
+    it("Email already registered", async () => {
+      const users = {
+        firstName : "Imam",
+        lastName : "Taufiq",
+        email: "selly@gmail.com",
+        password : "selly1234",
+        username : "Imam",
+        country_code : "+62",
+        phone_number : "01234567877",
+        address : "Kalimantan",
+        role : 2
+      };
+      const response = await request(app).post('/api/auth/register').send(users);
+      expect(response.statusCode).toBe(400);
+    });
   });
   
   describe("API Login", () => {
@@ -29,8 +44,20 @@ describe("API Register", () => {
         email : "selly@gmail.com",
         password : "selly1234",
       };
-      const response = await request(app).post('/api/auth/login').send(users);
+      const response = await request(app)
+      .post('/api/auth/login')
+      .send(users);
       expect(response.statusCode).toBe(200);
+    });
+    it("Wrong Password", async () => {
+      const users = {
+        email : "selly@gmail.com",
+        password : faker.internet.email(),
+      };
+      const response = await request(app)
+      .post('/api/auth/login')
+      .send(users);
+      expect(response.statusCode).toBe(400);
     });
   });
 
@@ -41,6 +68,16 @@ describe("API Register", () => {
       .get("/api/auth/allusers")
       .set("Authorization", "Bearer " + token);
       expect(response.statusCode).toBe(200);
+    });
+    it("Not Found token", async () => {
+      const token = "";
+      const users = {
+        id : 1
+      };
+      const response = await request(app).get('/api/auth/allusers')
+      .set('Authorization', "Bearer " + token)
+      .send(users);
+      expect(response.statusCode).toBe(401);
     });
   });
 
@@ -54,6 +91,16 @@ describe("API Register", () => {
       .set('Authorization', "Bearer " + token)
       .send(users);
       expect(response.statusCode).toBe(200);
+    });
+    it("Not Found token", async () => {
+      const token = "";
+      const users = {
+        id : 1
+      };
+      const response = await request(app).get('/api/auth/profile')
+      .set('Authorization', "Bearer " + token)
+      .send(users);
+      expect(response.statusCode).toBe(401);
     });
   });
 
@@ -73,13 +120,54 @@ describe("API Register", () => {
   // });
 
   describe('API update profile', () => {
-    var auth = {};
-    beforeAll(loginUser(auth));
-it('profil berhasil diubah', async () => {
-  const response = await request(app)
-    .put('/api/auth/update-profile')
-    .set('Authorization', auth.token)
-    .send({ fullName: 'stringingg' });
-  expect(response.statusCode).toBe(200);
-});
+    it('Success Update Profile', async () => {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTY3MjM5Mjc2N30.XQilrMSQcPF0sydg792FTeHSqnhaQhbDIrVQeuQzvJk";
+      const user = {
+        id:2
+      }
+      const users = {
+        firstName : "Imam",
+        lastName : "Taufiq",
+        email: faker.internet.email(),
+        password : "123456789",
+        username : "Imam",
+        country_code : "+62",
+        phone_number : "01234567877",
+        address : "Kalimantan",
+        role : 2
+      };
+      const image ={
+        photo :"img.url"
+      }
+      const response = await request(app)
+        .put(`/api/auth/profile/${user.id}`)
+        .set('Authorization', "Bearer " + token + image )
+        .send(users);
+      expect(response.statusCode).toBe(200);
+    });
+  it('Not Found Token', async () => {
+    const token = "";
+    const user = {
+      id:2
+    }
+    const users = {
+      firstName : "Imam",
+      lastName : "Taufiq",
+      email: faker.internet.email(),
+      password : "123456789",
+      username : "Imam",
+      country_code : "+62",
+      phone_number : "01234567877",
+      address : "Kalimantan",
+      role : 2
+    };
+    const image ={
+      photo :"img.url"
+    }
+    const response = await request(app)
+      .put(`/api/auth/profile/${user.id}`)
+      .set('Authorization', "Bearer " + token + image )
+      .send(users);
+    expect(response.statusCode).toBe(401);
+  });
 });
